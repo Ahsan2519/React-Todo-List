@@ -1,0 +1,16 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+@tailwind base;
+.common{
+  @apply w-full pl-[8%] text-[28px] text-[#989898] py-2 border-b-2 border-[#E6E6E6]
+}
+
+.icon{
+ @apply before:content-[""] before:absolute before:w-[35px] before:h-[35px] before:bg-white  before:border-[#F9F9F9] before:left-0 before:border-[1px]
+}
+@tailwind components;
+@tailwind utilities;
