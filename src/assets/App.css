@@ -6,11 +6,14 @@
 
 @tailwind base;
 .common{
-  @apply w-full pl-[8%] text-[28px] text-[#989898] py-2 border-b-2 border-[#E6E6E6]
+  @apply w-full pl-[10%] text-[28px] text-[#989898] py-2 border-b-2 border-[#E6E6E6] capitalize 
 }
 
 .icon{
- @apply before:content-[""] before:absolute before:w-[35px] before:h-[35px] before:bg-white  before:border-[#F9F9F9] before:left-0 before:border-[1px]
+ @apply before:content-[""] before:absolute before:w-[30px] before:h-[30px] before:bg-white  before:border-[#bbb7b7] before:left-2 before:border-[1px] before:rounded-[50%] before:top-[50%] before:translate-y-[-50%] 
+}
+.completed {
+  @apply hover:before:content-['\f00c'] hover:before:font-['FontAwesome'] hover:before:text-[18px] hover:before:flex hover:before:justify-center hover:before:items-center hover:before:text-[#98ccc2]
 }
 @tailwind components;
 @tailwind utilities;
