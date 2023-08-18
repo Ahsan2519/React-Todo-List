@@ -6,7 +6,9 @@ const Todos = () => {
     initialTodos = storedTodos ? JSON.parse(storedTodos) : [],
     [todostask, setTodosTask] = useState(initialTodos),
     [empty, setEmpty] = useState(false),
-    refInput = useRef(null);
+    [completedItems, setCompletedItems] = useState([]),
+    [done, setDone] = useState(false),
+    [all, setAll] = useState(true);
 
   const submitEvent = (e) => {
     e.preventDefault();
@@ -34,11 +36,25 @@ const Todos = () => {
     setTodosTask(updatedTodos);
 
     if (event.detail === 2) {
-      refInput.current.value = todostask[idx].task;
+      // refInput.current.value = todostask[idx].task;
       // let editTask = refInput.current.value
       // console.log(refInput.current.value)
     }
   };
+
+  const allEvent = ()=>{
+    setAll(true)
+    setDone(false);
+    console.log(false)
+  }
+
+  const completedEvent = () => {
+    setAll(false)
+    setDone(true)
+    const completedTodos = todostask.filter(element => element.completed);
+    setCompletedItems(completedTodos);
+  }
+  
 
   const itemLeft = todostask.filter((ele) => {
     if (!ele.completed) {
@@ -55,7 +71,6 @@ const Todos = () => {
             placeholder={empty ? "Field is required" : "What needs to be done?"}
             name="search"
             value={inputVal}
-            ref={refInput}
             className={`${
               empty ? "placeholder:text-red-700" : "placeholder:text-[#989898]"
             } common outline-none`}
@@ -66,7 +81,18 @@ const Todos = () => {
       </form>
       <div>
         <ul>
-          {todostask.map((value, idx) => (
+          {!done && todostask.map((value, idx) => (
+            <li
+              key={idx}
+              className={`${
+                value.completed ? "line-through completed" : ""
+              } common relative icon cursor-pointer`}
+              onClick={(event) => completedTodo(event, idx)}
+            >
+              {value.task}
+            </li>
+          ))}
+          {done && completedItems.map((value, idx) => (
             <li
               key={idx}
               className={`${
@@ -80,16 +106,16 @@ const Todos = () => {
         </ul>
         <div className="flex justify-between px-[15px] items-center">
           <span>
-            {itemLeft.length} item{itemLeft.length !== 1 ? "s" : ""} left
+            {all ? itemLeft.length : "0"} item{itemLeft.length !== 1 ? "s" : ""} left
           </span>
           <ul className="flex justify-between py-3 basis-[45%] text-black gap-2">
-            <li className="basis-[20%] border-[1px] border-[#EFD5D5] block text-center cursor-pointer">
+            <li className={`${ all ? 'active' : ''} basis-[20%] list-common`} onClick={ () => allEvent()}>
               All
             </li>
-            <li className="basis-[38%] block text-center cursor-pointer">
+            <li className="basis-[28%] list-common">
               Active
             </li>
-            <li className={`basis-[38%] block text-center cursor-pointer`}>
+            <li className={`${ done ? 'active' : ''} basis-[45%] list-common`} onClick={()=>completedEvent()}>
               Completed
             </li>
           </ul>

@@ -15,5 +15,12 @@
 .completed {
   @apply before:content-['\f00c'] before:font-['FontAwesome'] before:text-[18px] before:flex before:justify-center before:items-center before:text-[#98ccc2]
 }
+.active {
+  @apply border-[1px] border-[#ec7373]
+}
+.list-common {
+  @apply block text-center cursor-pointer py-[3px]
+}
+
 @tailwind components;
 @tailwind utilities;
