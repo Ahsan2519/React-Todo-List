@@ -35,6 +35,9 @@ const Todos = () => {
     const updatedTodos = [...todostask];
     updatedTodos[idx].completed = !updatedTodos[idx].completed;
     setTodosTask(updatedTodos);
+    if(event.detail === 2){
+      setInputVal(updatedTodos[idx].task);
+    }
   };
 
   const allEvent = () => {
@@ -106,25 +109,25 @@ const Todos = () => {
             ))}
         </ul>
         <div className="flex justify-between px-[15px] items-center">
-          <span>
+          <span className="mobile:text-[16px] text-[12px]">
             {itemLeft.length} item{itemLeft.length !== 1 ? "s" : ""} left
           </span>
           <ul className="flex justify-between py-3 basis-[45%] text-black gap-2">
             <li
-              className={`${all ? "active" : ""} basis-[20%] list-common`}
+              className={`${all ? "active" : ""} basis-[20%] list-common text-[12px]`}
               onClick={() => allEvent()}
             >
               All
             </li>
             <li
               className={`${!done && !all ? "active" : ""
-                } basis-[25%] list-common`}
+                } basis-[25%] list-common text-[12px]`}
               onClick={() => activeEvent()}
             >
               Active
             </li>
             <li
-              className={`${done ? "active" : ""} basis-[45%] list-common`}
+              className={`${done ? "active" : ""} basis-[45%] list-common text-[12px]`}
               onClick={() => completedEvent()}
             >
               Completed
@@ -133,7 +136,7 @@ const Todos = () => {
           <button
             onClick={() => {
               clearCompletedTodos();
-            }}
+            }} className="mobile:text-[16px] text-[12px]"
           >
             Clear completed
           </button>
