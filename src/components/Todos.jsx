@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 const Todos = () => {
   const [inputVal, setInputVal] = useState(""),
@@ -7,6 +7,7 @@ const Todos = () => {
     [todostask, setTodosTask] = useState(initialTodos),
     [empty, setEmpty] = useState(false),
     [completedItems, setCompletedItems] = useState([]),
+    [activeTodos, setActiveTodos] = useState([]),
     [done, setDone] = useState(false),
     [all, setAll] = useState(true);
 
@@ -34,33 +35,34 @@ const Todos = () => {
     const updatedTodos = [...todostask];
     updatedTodos[idx].completed = !updatedTodos[idx].completed;
     setTodosTask(updatedTodos);
-
-    if (event.detail === 2) {
-      // refInput.current.value = todostask[idx].task;
-      // let editTask = refInput.current.value
-      // console.log(refInput.current.value)
-    }
   };
 
-  const allEvent = ()=>{
-    setAll(true)
+  const allEvent = () => {
+    setAll(true);
     setDone(false);
-    console.log(false)
-  }
+  };
 
   const completedEvent = () => {
-    setAll(false)
-    setDone(true)
-    const completedTodos = todostask.filter(element => element.completed);
+    setAll(false);
+    setDone(true);
+    const completedTodos = todostask.filter((element) => element.completed);
     setCompletedItems(completedTodos);
-  }
-  
+  };
 
-  const itemLeft = todostask.filter((ele) => {
-    if (!ele.completed) {
-      return ele;
-    }
-  });
+  const activeEvent = () => {
+    setAll(false);
+    setDone(false);
+    const activeItems = todostask.filter((element) => !element.completed);
+    setActiveTodos(activeItems);
+  };
+
+  const clearCompletedTodos = () => {
+    const removeCompleteTodos = todostask.filter((remove) => !remove.completed);
+    setTodosTask(removeCompleteTodos);
+    setCompletedItems([])
+  };
+
+  const itemLeft = todostask.filter((ele) => !ele.completed);
 
   return (
     <div className="w-[90%] 2xl:w-[70%] mx-auto bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
@@ -71,9 +73,8 @@ const Todos = () => {
             placeholder={empty ? "Field is required" : "What needs to be done?"}
             name="search"
             value={inputVal}
-            className={`${
-              empty ? "placeholder:text-red-700" : "placeholder:text-[#989898]"
-            } common outline-none`}
+            className={`${empty ? "placeholder:text-red-700" : "placeholder:text-[#989898]"
+              } common outline-none`}
             onKeyDown={todosHandler}
             onChange={(e) => setInputVal(e.target.value)}
           />
@@ -81,45 +82,61 @@ const Todos = () => {
       </form>
       <div>
         <ul>
-          {!done && todostask.map((value, idx) => (
-            <li
-              key={idx}
-              className={`${
-                value.completed ? "line-through completed" : ""
-              } common relative icon cursor-pointer`}
-              onClick={(event) => completedTodo(event, idx)}
-            >
-              {value.task}
-            </li>
-          ))}
-          {done && completedItems.map((value, idx) => (
-            <li
-              key={idx}
-              className={`${
-                value.completed ? "line-through completed" : ""
-              } common relative icon cursor-pointer`}
-              onClick={(event) => completedTodo(event, idx)}
-            >
-              {value.task}
-            </li>
-          ))}
+          {!done &&
+            (all ? todostask : activeTodos).map((value, idx) => (
+              <li
+                key={idx}
+                className={`${value.completed ? "line-through completed" : ""
+                  } common relative icon cursor-pointer`}
+                onClick={(event) => completedTodo(event, idx)}
+              >
+                {value.task}
+              </li>
+            ))}
+          {done &&
+            completedItems.map((value, idx) => (
+              <li
+                key={idx}
+                className={`${value.completed ? "line-through completed" : ""
+                  } common relative icon cursor-pointer`}
+                onClick={(event) => completedTodo(event, idx)}
+              >
+                {value.task}
+              </li>
+            ))}
         </ul>
         <div className="flex justify-between px-[15px] items-center">
           <span>
-            {all ? itemLeft.length : "0"} item{itemLeft.length !== 1 ? "s" : ""} left
+            {itemLeft.length} item{itemLeft.length !== 1 ? "s" : ""} left
           </span>
           <ul className="flex justify-between py-3 basis-[45%] text-black gap-2">
-            <li className={`${ all ? 'active' : ''} basis-[20%] list-common`} onClick={ () => allEvent()}>
+            <li
+              className={`${all ? "active" : ""} basis-[20%] list-common`}
+              onClick={() => allEvent()}
+            >
               All
             </li>
-            <li className="basis-[28%] list-common">
+            <li
+              className={`${!done && !all ? "active" : ""
+                } basis-[25%] list-common`}
+              onClick={() => activeEvent()}
+            >
               Active
             </li>
-            <li className={`${ done ? 'active' : ''} basis-[45%] list-common`} onClick={()=>completedEvent()}>
+            <li
+              className={`${done ? "active" : ""} basis-[45%] list-common`}
+              onClick={() => completedEvent()}
+            >
               Completed
             </li>
           </ul>
-          <button>Clear completed</button>
+          <button
+            onClick={() => {
+              clearCompletedTodos();
+            }}
+          >
+            Clear completed
+          </button>
         </div>
       </div>
     </div>
