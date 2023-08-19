@@ -9,6 +9,8 @@ const Todos = () => {
     [completedItems, setCompletedItems] = useState([]),
     [activeTodos, setActiveTodos] = useState([]),
     [done, setDone] = useState(false),
+    [editIndex, setEditIndex] = useState(null),
+    [isEditing, setIsEditing] = useState(false),
     [all, setAll] = useState(true);
 
   const submitEvent = (e) => {
@@ -18,7 +20,15 @@ const Todos = () => {
   const todosHandler = (e) => {
     if (e.key === "Enter") {
       if (inputVal !== "") {
-        setTodosTask([...todostask, { task: inputVal, completed: false }]);
+        if (isEditing && editIndex !== null) {
+          const editTodos = [...todostask];
+          editTodos[editIndex].task = inputVal;
+          setTodosTask(editTodos);
+          setEditIndex(null);
+          setIsEditing(false);
+        } else {
+          setTodosTask([...todostask, { task: inputVal, completed: false }]);
+        }
         setInputVal("");
         setEmpty(false);
       } else {
@@ -37,6 +47,8 @@ const Todos = () => {
     setTodosTask(updatedTodos);
     if(event.detail === 2){
       setInputVal(updatedTodos[idx].task);
+      setIsEditing(!isEditing)
+      setEditIndex(idx)
     }
   };
 
