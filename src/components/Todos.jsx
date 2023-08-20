@@ -45,10 +45,10 @@ const Todos = () => {
     const updatedTodos = [...todostask];
     updatedTodos[idx].completed = !updatedTodos[idx].completed;
     setTodosTask(updatedTodos);
-    if(event.detail === 2){
+    if (event.detail === 2) {
       setInputVal(updatedTodos[idx].task);
-      setIsEditing(!isEditing)
-      setEditIndex(idx)
+      setIsEditing(!isEditing);
+      setEditIndex(idx);
     }
   };
 
@@ -74,87 +74,106 @@ const Todos = () => {
   const clearCompletedTodos = () => {
     const removeCompleteTodos = todostask.filter((remove) => !remove.completed);
     setTodosTask(removeCompleteTodos);
-    setCompletedItems([])
+    setCompletedItems([]);
   };
 
   const itemLeft = todostask.filter((ele) => !ele.completed);
 
   return (
-    <div className="w-[90%] 2xl:w-[70%] mx-auto bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-      <form onSubmit={submitEvent}>
-        <div>
-          <input
-            type="text"
-            placeholder={empty ? "Field is required" : "What needs to be done?"}
-            name="search"
-            value={inputVal}
-            className={`${empty ? "placeholder:text-red-700" : "placeholder:text-[#989898]"
+    <>
+      <div className="w-[90%] 2xl:w-[70%] mx-auto bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+        <form onSubmit={submitEvent}>
+          <div>
+            <input
+              type="text"
+              placeholder={
+                empty ? "Field is required" : "What needs to be done?"
+              }
+              name="search"
+              value={inputVal}
+              className={`${
+                empty
+                  ? "placeholder:text-red-700"
+                  : "placeholder:text-[#989898]"
               } common outline-none`}
-            onKeyDown={todosHandler}
-            onChange={(e) => setInputVal(e.target.value)}
-          />
-        </div>
-      </form>
-      <div>
-        <ul>
-          {!done &&
-            (all ? todostask : activeTodos).map((value, idx) => (
-              <li
-                key={idx}
-                className={`${value.completed ? "line-through completed" : ""
+              onKeyDown={todosHandler}
+              onChange={(e) => setInputVal(e.target.value)}
+            />
+          </div>
+        </form>
+        <div>
+          <ul>
+            {!done &&
+              (all ? todostask : activeTodos).map((value, idx) => (
+                <li
+                  key={idx}
+                  className={`${
+                    value.completed ? "line-through completed" : ""
                   } common relative icon cursor-pointer`}
-                onClick={(event) => completedTodo(event, idx)}
-              >
-                {value.task}
-              </li>
-            ))}
-          {done &&
-            completedItems.map((value, idx) => (
-              <li
-                key={idx}
-                className={`${value.completed ? "line-through completed" : ""
+                  onClick={(event) => completedTodo(event, idx)}
+                >
+                  {value.task}
+                </li>
+              ))}
+            {done &&
+              completedItems.map((value, idx) => (
+                <li
+                  key={idx}
+                  className={`${
+                    value.completed ? "line-through completed" : ""
                   } common relative icon cursor-pointer`}
-                onClick={(event) => completedTodo(event, idx)}
-              >
-                {value.task}
-              </li>
-            ))}
-        </ul>
-        <div className="flex justify-between px-[15px] items-center">
-          <span className="mobile:text-[16px] text-[12px]">
-            {itemLeft.length} item{itemLeft.length !== 1 ? "s" : ""} left
-          </span>
-          <ul className="flex justify-between py-3 basis-[45%] text-black gap-2">
-            <li
-              className={`${all ? "active" : ""} basis-[20%] list-common text-[12px]`}
-              onClick={() => allEvent()}
-            >
-              All
-            </li>
-            <li
-              className={`${!done && !all ? "active" : ""
-                } basis-[25%] list-common text-[12px]`}
-              onClick={() => activeEvent()}
-            >
-              Active
-            </li>
-            <li
-              className={`${done ? "active" : ""} basis-[45%] list-common text-[12px]`}
-              onClick={() => completedEvent()}
-            >
-              Completed
-            </li>
+                  onClick={(event) => completedTodo(event, idx)}
+                >
+                  {value.task}
+                </li>
+              ))}
           </ul>
-          <button
-            onClick={() => {
-              clearCompletedTodos();
-            }} className="mobile:text-[16px] text-[12px]"
-          >
-            Clear completed
-          </button>
+          <div className="flex justify-between px-[15px] items-center">
+            <span className="mobile:text-[16px] text-[12px]">
+              {itemLeft.length} item{itemLeft.length !== 1 ? "s" : ""} left
+            </span>
+            <ul className="flex justify-between py-3 basis-[45%] text-black gap-2">
+              <li
+                className={`${
+                  all ? "active" : ""
+                } basis-[20%] list-common text-[12px]`}
+                onClick={() => allEvent()}
+              >
+                All
+              </li>
+              <li
+                className={`${
+                  !done && !all ? "active" : ""
+                } basis-[25%] list-common text-[12px]`}
+                onClick={() => activeEvent()}
+              >
+                Active
+              </li>
+              <li
+                className={`${
+                  done ? "active" : ""
+                } basis-[45%] list-common text-[12px]`}
+                onClick={() => completedEvent()}
+              >
+                Completed
+              </li>
+            </ul>
+            <button
+              onClick={() => {
+                clearCompletedTodos();
+              }}
+              className="mobile:text-[16px] text-[12px]"
+            >
+              Clear completed
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+      <span className="block text-center my-8 text-[#757575]">
+        <span className="font-[600] text-black">Note:</span> Double-Click to
+        edit todos
+      </span>
+    </>
   );
 };
 
