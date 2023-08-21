@@ -19,13 +19,12 @@ const Todos = () => {
 
   const todosHandler = (e) => {
     if (e.key === "Enter") {
-      inputVal.trim() !== ""
+      inputVal.trim()
         ? (() => {
-            isEditing && editIndex !== null
+            isEditing && editIndex
               ? (() => {
-                  const editTodos = [...todostask];
-                  editTodos[editIndex].task = inputVal;
-                  setTodosTask(editTodos);
+                  todostask[editIndex].task = inputVal;
+                  setTodosTask(todostask);
                   setEditIndex(null);
                   setIsEditing(false);
                 })()
