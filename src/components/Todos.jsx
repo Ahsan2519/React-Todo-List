@@ -20,15 +20,15 @@ const Todos = () => {
   const todosHandler = (e) => {
     if (e.key === "Enter") {
       if (inputVal.trim() !== "") {
-        if (isEditing && editIndex !== null) {
-          const editTodos = [...todostask];
-          editTodos[editIndex].task = inputVal;
-          setTodosTask(editTodos);
-          setEditIndex(null);
-          setIsEditing(false);
-        } else {
-          setTodosTask([...todostask, { task: inputVal, completed: false }]);
-        }
+        isEditing && editIndex !== null
+          ? (() => {
+              const editTodos = [...todostask];
+              editTodos[editIndex].task = inputVal;
+              setTodosTask(editTodos);
+              setEditIndex(null);
+              setIsEditing(false);
+            })()
+          : setTodosTask([...todostask, { task: inputVal, completed: false }]);
         setInputVal("");
         setEmpty(false);
       } else {
